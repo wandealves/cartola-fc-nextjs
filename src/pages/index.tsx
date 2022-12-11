@@ -1,12 +1,11 @@
 import type { NextPage } from "next";
-import { Button } from "@mui/material";
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
   return (
     <div>
-    
+      <h1>Home</h1>
     </div>
   );
 };
 
-export default Home;
+export default HomePage;
