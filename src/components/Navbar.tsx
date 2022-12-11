@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { PropsWithChildren } from "react";
-import { AppBar, Box, Button, Toolbar } from "@mui/material";
+import { AppBar, Avatar, Box, Button, Chip, Toolbar } from "@mui/material";
 import Image from "next/image";
 import Link, { LinkProps } from "next/link";
 
@@ -24,7 +24,7 @@ export const NavabarItem = (props: PropsWithChildren<NavbarItemProps>) => {
 export const Navbar = () => {
   const router = useRouter();
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1,ml: (theme)=>theme.spacing(4) }}>
       <AppBar position="static" sx={{ background: "none", boxShadow: "none" }}>
         <Toolbar>
           <Image
@@ -39,6 +39,7 @@ export const Navbar = () => {
             <NavabarItem href="/players" showUnderline={router.pathname === '/players'}>Escalação</NavabarItem>
             <NavabarItem href="/matches" showUnderline={['/matches','/matches/[id]'].includes(router.pathname)}>Jogos</NavabarItem>
           </Box>
+          <Chip label={'300'} avatar={<Avatar>C$</Avatar>} color="secondary" />
         </Toolbar>
       </AppBar>
     </Box>
