@@ -1,5 +1,6 @@
 import { Box, BoxProps } from "@mui/material";
 import Image from "next/image";
+
 import { Label } from "./Label";
 
 export type TeamLogoProps = BoxProps;

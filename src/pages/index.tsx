@@ -2,8 +2,8 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import { Button, Divider, Grid, styled } from "@mui/material";
 import type { NextPage } from "next";
 import Link from "next/link";
-import { Label } from "../components/Label";
 
+import { Label } from "../components/Label";
 import { Page } from "../components/Page";
 import { Section } from "../components/Section";
 import { TeamLogo } from "../components/TeamLogo";
