@@ -10,6 +10,12 @@ Página com as informações da última pontuação e o patrimônio.
 
 ![Home](https://raw.githubusercontent.com/wandealves/cartola-fc-nextjs/develop/public/images/home.png "Home")
 
+## Página Escalação
+
+Página onde podemos realizar a escalçaão do nosso time
+
+![Escalacao](https://raw.githubusercontent.com/wandealves/cartola-fc-nextjs/develop/public/images/escalacao.png "Escalacão")
+
 ## Adicionar Material UI
 
 npm i @mui/material @emotion/react @emotion/styled @emotion/cache @emotion/server @next/font @mui/icons-material
