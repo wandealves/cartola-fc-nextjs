@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Cartola FC com NextJs
 
-Construção de uma aplicação frontend usando a tecnológia [Next.js](https://nextjs.org/)
+Construção de uma aplicação frontend usando a tecnológia [Next.js](https://nextjs.org/) e [Material UI](https://mui.com/)
 
 ## Página Home
 
