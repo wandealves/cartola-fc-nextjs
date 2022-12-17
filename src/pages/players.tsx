@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   Autocomplete,
   Avatar,
@@ -26,47 +26,47 @@ import { Player, PlayersMap } from "../util/models";
 
 const players = [
   {
-    id: 1,
+    id: "1",
     name: "Messi",
     price: 35
   },
   {
-    id: 2,
+    id: "2",
     name: "Cristiano Ronaldo",
     price: 35
   },
   {
-    id: 3,
+    id: "3",
     name: "Neymar",
     price: 25
   },
   {
-    id: 4,
+    id: "4",
     name: "Vinicius Junior",
     price: 25
   },
   {
-    id: 5,
+    id: "5",
     name: "De Bruyne",
     price: 15
   },
   {
-    id: 6,
+    id: "6",
     name: "Lewandowski",
     price: 15
   },
   {
-    id: 7,
+    id: "7",
     name: "MMaguirre",
     price: 15
   },
   {
-    id: 8,
+    id: "8",
     name: "Chicharlison",
     price: 15
   },
   {
-    id: 9,
+    id: "9",
     name: "Harry Kane",
     price: 15
   }
@@ -84,13 +84,51 @@ const makeFakePlayer = (key: number) => ({
 });
 
 const totalPlayers = 4;
-
+const balance = 300;
 const fakePlayers: Player[] = new Array(totalPlayers)
   .fill(0)
   .map((_, key) => makeFakePlayer(key));
 
 const ListPlayersPage: NextPage = () => {
   const [playersSelected, setPlayersSelected] = useState(fakePlayers);
+
+  const countPlayersUsed = useMemo(
+    () => playersSelected.filter(player => player.id).length,
+    [playersSelected]
+  );
+
+  const budgetRemaining = useMemo(
+    () =>
+      balance - playersSelected.reduce((acc, player) => acc + player.price, 0),
+    [playersSelected]
+  );
+
+  const addPlayer = useCallback((player: Player) => {
+    setPlayersSelected(prev => {
+      const hasFound = prev.find(p => p.id === player.id);
+      if (hasFound) return prev;
+
+      const firstIndexFakerPlayer = prev.findIndex(p => !p.id);
+
+      if (firstIndexFakerPlayer === -1) return prev;
+
+      const newPlayers = [...prev];
+      newPlayers[firstIndexFakerPlayer] = player;
+      return newPlayers;
+    });
+  }, []);
+
+  const removePlayer = useCallback((index: number) => {
+    setPlayersSelected(prev => {
+      const newPlayer = prev.map((p, key) => {
+        if (key === index) {
+          return makeFakePlayer(key);
+        }
+        return p;
+      });
+      return newPlayer;
+    });
+  }, []);
 
   return (
     <Page>
@@ -109,7 +147,7 @@ const ListPlayersPage: NextPage = () => {
                 position: "absolute",
                 flexDirection: "row",
                 gap: theme => theme.spacing(1),
-                ml: theme => theme.spacing(-2.5),
+                ml: theme => theme.spacing(-5.5),
                 mt: theme => theme.spacing(-3.5)
               }}
             />
@@ -121,7 +159,7 @@ const ListPlayersPage: NextPage = () => {
               }}
             >
               <Label>Você ainda tem</Label>
-              <Label>C$ 300</Label>
+              <Label>C$ {budgetRemaining}</Label>
             </Box>
           </Section>
         </Grid>
@@ -143,7 +181,7 @@ const ListPlayersPage: NextPage = () => {
                     if (!newValue) {
                       return;
                     }
-                    // addPlayer(newValue);
+                    addPlayer(newValue);
                   }}
                   renderOption={(props, option) => (
                     <React.Fragment key={option.name}>
@@ -188,22 +226,27 @@ const ListPlayersPage: NextPage = () => {
                     <React.Fragment key={key}>
                       <ListItem
                         secondaryAction={
-                          <IconButton edge="end" disabled={!player.id}>
+                          <IconButton
+                            edge="end"
+                            disabled={!player.id}
+                            onClick={() => removePlayer(key)}
+                          >
                             <DeleteIcon />
                           </IconButton>
                         }
                       >
                         <ListItemAvatar>
                           <Avatar>
-                            <PersonIcon />
-                            {/*
-                            <Image
-                            src={PlayersMap[player.name]}
-                            width={40}
-                            height={40}
-                            alt=""
-                          />
-                        */}
+                            {!player.id ? (
+                              <PersonIcon />
+                            ) : (
+                              <Image
+                                src={PlayersMap[player.name]}
+                                width={40}
+                                height={40}
+                                alt=""
+                              />
+                            )}
                           </Avatar>
                         </ListItemAvatar>
                         <ListItemText
@@ -220,7 +263,13 @@ const ListPlayersPage: NextPage = () => {
           </Section>
         </Grid>
         <Grid item>
-          <Button variant="contained" size="large" disabled>Salvar</Button>
+          <Button
+            variant="contained"
+            size="large"
+            disabled={countPlayersUsed < totalPlayers || budgetRemaining <= 0}
+          >
+            Salvar
+          </Button>
         </Grid>
       </Grid>
     </Page>
